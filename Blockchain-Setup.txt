@@ -1,6 +1,8 @@
 
 Configuration of the TestSuite to be executed
 
-1)Access the "TS-Blockchain" test suite.
-2)In Custom Properties, set "CurrentBlock" to the same block number to start.
-3)Excecute the TestSuite or the TestCase
+1)Open SoapUI
+2)Impor the "Blockchain-soapui-project.xml" project
+3)Access the "TS-Blockchain" test suite.
+4)In Custom Properties, set "CurrentBlock" to the same block number to start.
+5)Excecute the TestSuite or the TestCase
