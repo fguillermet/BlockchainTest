@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="e91aad43-c17c-48d6-88fe-c07e7e381cd5" activeEnvironment="Default" name="Blockchain" resourceRoot="" soapui-version="5.5.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:RestService" id="198d44e0-ae0c-4ecd-8d74-5b164ba9a517" wadlVersion="http://wadl.dev.java.net/2009/02" name="https://api.blockcypher.com" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart=""/><con:endpoints><con:endpoint>https://api.blockcypher.com</con:endpoint></con:endpoints><con:resource name="101" path="/v1/btc/main/blocks/${#TestSuite#CurrentBlock}" id="499b0595-250a-4e8b-aaa4-99a7d98cdade"><con:settings/><con:parameters><con:parameter><con:name>txstart</con:name><con:value>1</con:value><con:style>QUERY</con:style><con:default>1</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter><con:parameter><con:name>limit</con:name><con:value>1</con:value><con:style>QUERY</con:style><con:default>1</con:default><con:path xsi:nil="true"/><con:description xsi:nil="true"/></con:parameter></con:parameters><con:method name="101 1" id="514a09a6-430c-43e2-b1bf-b28861f50fd4" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:ns="https://api.blockcypher.com/v1/btc/main/blocks/101">ns:Response</con:element></con:representation><con:representation type="FAULT"><con:mediaType>text/plain; charset=utf-8</con:mediaType><con:status>404</con:status><con:params/><con:element>data</con:element></con:representation><con:request name="Request 1" id="fdc7df9b-e743-4e25-811a-d7639f3f8a04" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>https://api.blockcypher.com</con:endpoint><con:request/><con:originalUri>https://api.blockcypher.com/v1/btc/main/blocks/101</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters>
+  <con:entry key="limit" value="1"/>
+  <con:entry key="txstart" value="1"/>
+</con:parameters><con:parameterOrder><con:entry>txstart</con:entry><con:entry>limit</con:entry></con:parameterOrder></con:request></con:method></con:resource></con:interface><con:testSuite id="27d214c4-6eeb-4feb-97dc-20e9e7b12aab" name="TS-Blockchain"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="2648288c-6496-4f7e-919d-97e95a4f31ed" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="01-Validate Block chain" searchProperties="true"><con:settings/><con:testStep type="groovy" name="01-ConfigTC" id="eeac43c2-7917-4465-ac9c-dec0482a278d"><con:settings/><con:config><script>//Set Start Block and End Block
+testRunner.testCase.testSuite.setPropertyValue("StartBlock", '100')
+testRunner.testCase.testSuite.setPropertyValue("EndBlock", '110')
+//testRunner.testCase.testSuite.setPropertyValue("CurrentBlock", '100')
+
+//The block number is verified
+if(testRunner.testCase.testSuite.getPropertyValue("CurrentBlock") > testRunner.testCase.testSuite.getPropertyValue("StartBlock")){
+	testRunner.testCase.testSuite.setPropertyValue("CurrentBlock", testRunner.testCase.testSuite.getPropertyValue("CurrentBlock"))
+	}
+else
+  testRunner.testCase.testSuite.setPropertyValue("CurrentBlock", testRunner.testCase.testSuite.getPropertyValue("StartBlock"))</script></con:config></con:testStep><con:testStep type="restrequest" name="02-Block" id="aa0c3cb2-8c51-48f2-bfba-703f1b77c49b"><con:settings/><con:config service="https://api.blockcypher.com" resourcePath="/v1/btc/main/blocks/${#TestSuite#CurrentBlock}" methodName="101 1" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="02-Block" id="fdc7df9b-e743-4e25-811a-d7639f3f8a04" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>https://api.blockcypher.com</con:endpoint><con:request/><con:originalUri>https://api.blockcypher.com/v1/btc/main/blocks/101</con:originalUri><con:assertion type="JsonPath Match" id="a8c3240f-2ce9-4afc-a5ce-759f98912cbc" name="Assertion Rule-Valid Block Number"><con:configuration><path>.height</path><content>[${#TestSuite#CurrentBlock}]</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters>
+  <con:entry key="limit" value="1"/>
+  <con:entry key="txstart" value="1"/>
+</con:parameters><con:parameterOrder><con:entry>txstart</con:entry><con:entry>limit</con:entry></con:parameterOrder></con:restRequest></con:config></con:testStep><con:testStep type="transfer" name="Property Transfer" id="e33e0b25-507a-4466-ab7e-554d5660edde"><con:settings/><con:config xsi:type="con:PropertyTransfersStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:transfers setNullOnMissingSource="true" transferTextContent="true" failOnError="true" ignoreEmpty="false" transferToAll="false" entitize="false" transferChildNodes="false"><con:name>CurrentBlock</con:name><con:sourceType>Response</con:sourceType><con:sourceStep>02-Block</con:sourceStep><con:sourcePath>.height</con:sourcePath><con:targetType>CurrentBlock</con:targetType><con:targetStep>#TestSuite#</con:targetStep><con:type>JSONPATH</con:type><con:targetTransferType>JSONPATH</con:targetTransferType><con:upgraded>true</con:upgraded></con:transfers></con:config></con:testStep><con:testStep type="groovy" name="03-Next block" id="45948287-d7d4-4ceb-8ed2-0b2a6e3ad271"><con:settings/><con:config><script>import javax.swing.JComboBox as JComboBox
+import javax.swing.JFrame as JFrame
+import javax.swing.JOptionPane as JOptionPane
+
+// Define control variable
+def ControlCurrBlock
+
+//Capture "CurrentoBlock" property value to strat de control
+ControlCurrBlock = testRunner.testCase.testSuite.getPropertyValue("CurrentBlock").toString()
+
+//Unnecessary characters are removed
+ControlCurrBlock = ControlCurrBlock.substring(1,4)
+
+//The block counter runs
+ControlCurrBlock = ControlCurrBlock.toInteger()
+ControlCurrBlock = ControlCurrBlock+1
+ControlCurrBlock = ControlCurrBlock.toString()
+
+//The operaicon is registered in the Log and the value of the "CurrentBlock" property is reassigned
+log.info ("Block tested: "+ControlCurrBlock)
+testRunner.testCase.testSuite.setPropertyValue("CurrentBlock",ControlCurrBlock)
+
+JOptionPane.showMessageDialog(null,ControlCurrBlock)
+
+//It is verified which block was verified to end the test or continue
+if(testRunner.testCase.testSuite.getPropertyValue("CurrentBlock")>'110'){
+	testRunner.cancel( "Block Finished" )
+
+	//Correct value an set the value to start again
+	ControlCurrBlock = ControlCurrBlock.toInteger()
+	ControlCurrBlock = ControlCurrBlock-1
+	ControlCurrBlock = ControlCurrBlock.toString()
+	testRunner.testCase.testSuite.setPropertyValue("CurrentBlock",ControlCurrBlock)
+}
+else
+  testRunner.getTestCase().getTestSuite().getProject().getWorkspace().getProjectByName("Blockchain").getTestSuiteByName("TS-Blockchain").getTestCaseByName("01-Validate Block chain").run(context.getProperties(),false);</script></con:config></con:testStep><con:setupScript/><con:properties/></con:testCase><con:properties><con:property><con:name>StartBlock</con:name><con:value>100</con:value></con:property><con:property><con:name>EndBlock</con:name><con:value>110</con:value></con:property><con:property><con:name>CurrentBlock</con:name><con:value>110</con:value></con:property></con:properties><con:setupScript/></con:testSuite><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/><con:sensitiveInformation/></con:soapui-project>
